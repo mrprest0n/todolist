@@ -9,14 +9,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-/**
- * ListsController implements the CRUD actions for Lists model.
- */
 class ListsController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
+    
     public function behaviors()
     {
         return [
@@ -29,10 +24,6 @@ class ListsController extends Controller
         ];
     }
 
-    /**
-     * Lists all Lists models.
-     * @return mixed
-     */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
@@ -48,40 +39,36 @@ class ListsController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new Lists model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
     public function actionCreate()
     {
         $model = new Lists();
-        $model->dt_create = date('Y-m-d H:i:s');
-        $model->dt_change = date('Y-m-d H:i:s');
+        $model->dt_create = date('Y-m-d');
+        $model->dt_change = date('Y-m-d');
         $model->user = Yii::$app->user->identity->id;
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        else
+        {
+            throw new HttpException(400, 'Что-то пошло не так.');
+        }
     }
 
-    /**
-     * Updates an existing Lists model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->dt_change = date('Y-m-d');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-           return $this->redirect(['index']);
+        if ($model->load(Yii::$app->request->post())) {  
+            if ($model->save())
+            {
+                return $this->redirect(['index']);
+            }
+            else
+            {
+                throw new HttpException(400, 'Что-то пошло не так.');
+            }
         }
 
         return $this->render('update', [
@@ -89,33 +76,24 @@ class ListsController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing Lists model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        if($this->findModel($id)->delete() !== false)
+        {
+            return $this->redirect(['index']);
+        }
+        else
+        {
+            throw new HttpException(400, 'Что-то пошло не так.');
+        }
     }
 
-    /**
-     * Finds the Lists model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Lists the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = Lists::findOne($id)) !== null) {
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException('Страница, отвечающая запросу, не найдена.');
     }
 }

@@ -2,10 +2,8 @@
 
 use yii\helpers\Html;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Lists */
+$this->title = 'Update';
 
-$this->title = 'Update Lists: ';
 ?>
 <div class="lists-update">
 

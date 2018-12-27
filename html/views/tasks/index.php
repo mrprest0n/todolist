@@ -6,7 +6,6 @@ use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 
 $this->title = 'Tasks';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tasks-index">
 

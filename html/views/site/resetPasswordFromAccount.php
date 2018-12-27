@@ -1,12 +1,9 @@
 <?php
  
-use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
- 
-/* @var $this yii\web\View */
-/* @var $model app\modules\user\models\ChangePasswordForm */
- 
-$this->title = Yii::t('app', 'Change password');
+use yii\bootstrap\ActiveForm;
+
+$this->title = 'Change password';
 
 ?>
 <div class="user-profile-password-change">
